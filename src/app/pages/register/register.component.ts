@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,13 @@ export class RegisterComponent {
   password!: string;
   confirmPassword!: string;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private afAuth: AngularFireAuth, private router: Router) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/home']);
+      }
+    });
+  }
 
   submit() {
     if (this.password === this.confirmPassword) {
