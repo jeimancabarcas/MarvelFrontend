@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,22 +29,27 @@ export class AuthService {
       sessionStorage.removeItem(this.sessionKey); 
       this.router.navigate(['/login']);
     }).catch((error) => {
-      console.error('Logout failed:', error);
+      throw new Error(error.message); 
     });
   }
 
-  signUp(name: string, id: string, email: string, password: string) {
+  signUp(name: string, lastName: string, id: string, email: string, password: string) {
     return this.afAuth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        return this.firestore.collection('users').doc(result?.user?.uid).set({
+        return this.firestore.collection('users').doc(result.user?.uid).set({
           name: name,
+          lastName: lastName,
           id: id,
           email: email
         });
+      }).catch((error) => {
+        throw new Error(error.message); 
       });
   }
 
-  isAuthenticated(): boolean {
-    return sessionStorage.getItem(this.sessionKey) !== null; 
+  isAuthenticated(): Observable<boolean> {
+    return this.afAuth.authState.pipe(
+      map(user => !!user)
+    );
   }
 }

@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'MarvelFrontend';
+  isAuthenticated$: Observable<boolean>;
 
-  constructor(private authService: AuthService) {}
-
-  get isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
+  constructor(private authService: AuthService) {
+    this.isAuthenticated$ = this.authService.isAuthenticated();
   }
 }

@@ -7,20 +7,24 @@
             <h1 class="h3 mb-3 fw-normal text-center">Iniciar Sesion</h1>
 
             <div class="form-floating mb-3">
-            <input
+                <input
                 type="email"
                 class="form-control"
                 id="floatingInput"
                 placeholder="name@example.com"
+                [(ngModel)]="email"
+                name="email"
             />
             <label for="floatingInput">Email</label>
             </div>
             <div class="form-floating mb-3">
-            <input
+                <input
                 type="password"
                 class="form-control"
                 id="floatingPassword"
                 placeholder="Password"
+                [(ngModel)]="password"
+                name="password"
             />
             <label for="floatingPassword">Contraseña</label>
             </div>
@@ -30,7 +34,11 @@
             </button>
             <a class="btn btn-link w-100 py-2" routerLink="/register" routerLinkActive="active">Registrarse</a>
             </div>
-            
+            @if(errorMessage) {
+              <div class="alert alert-danger mt-2" role="alert">
+                {{ errorMessage }}
+              </div>
+            }
             <p class="mt-5 mb-3 text-body-secondary text-center">&copy; 2024</p>
         </form>
     </div>

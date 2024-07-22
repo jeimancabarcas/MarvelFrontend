@@ -1,4 +1,4 @@
-@if(isAuthenticated) {
+@if(isAuthenticated$ | async) {
   <app-navbar></app-navbar>
 }
 <router-outlet />
