@@ -1,27 +1,46 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private sessionKey = 'user'; // Clave para almacenar el usuario en sessionStorage
+  private sessionKey = 'user';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private afAuth: AngularFireAuth, private firestore: AngularFirestore) {}
 
-  login(username: string, password: string): boolean {
-    // Implementar la lógica de autenticación aquí
-    if (username === 'test' && password === 'test') {
-      sessionStorage.setItem(this.sessionKey, JSON.stringify({ username })); // Guarda el usuario en sessionStorage
-      this.router.navigate(['/home']);
-      return true;
-    }
-    return false;
+  login(email: string, password: string): Promise<void> {
+    return this.afAuth.signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        sessionStorage.setItem(this.sessionKey, JSON.stringify({ email }));
+        this.router.navigate(['/home']);
+      })
+      .catch((error) => {
+        console.error('Login failed:', error);
+        throw error;
+      });
   }
 
   logout(): void {
-    sessionStorage.removeItem(this.sessionKey); 
-    this.router.navigate(['/login']);
+    this.afAuth.signOut().then(() => {
+      sessionStorage.removeItem(this.sessionKey); 
+      this.router.navigate(['/login']);
+    }).catch((error) => {
+      console.error('Logout failed:', error);
+    });
+  }
+
+  signUp(name: string, id: string, email: string, password: string) {
+    return this.afAuth.createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        return this.firestore.collection('users').doc(result?.user?.uid).set({
+          name: name,
+          id: id,
+          email: email
+        });
+      });
   }
 
   isAuthenticated(): boolean {

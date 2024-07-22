@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
     SharedModule,
   ],
   providers: [
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()),
+    provideFirebaseApp(() => initializeApp( environment.firebaseConfig )),
+    provideFirestore(() => getFirestore()),
   ],
   bootstrap: [AppComponent]
 })

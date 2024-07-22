@@ -15,29 +15,20 @@ export class MarvelService {
 
   private comicsSubject = new BehaviorSubject<Comic[]>([]);
   public comics$ = this.comicsSubject.asObservable();
-  public loading = false;
 
   constructor(private http: HttpClient) {}
 
-  getComics(): void {
-    this.loading = true;
+  getComics(): Observable<MarvelApiResponse> {
     const ts = new Date().getTime();
     const hash = CryptoJS.MD5(ts + this.privateKey + this.publicKey).toString();
     const year = new Date().getFullYear();
     const dateRange = `${year}-01-01,${year}-12-31`;
     const url = `${this.apiUrl}?ts=${ts}&apikey=${this.publicKey}&hash=${hash}&dateRange=${dateRange}`;
-    this.http.get<any>(url).pipe(
-      catchError(err => {
-        console.error('Error fetching comics:', err);
-        this.loading = false;
-        return of([]);
-      })
-    ).subscribe({
-      next: (data) => {
-        this.comicsSubject.next(data.data.results);
-        this.loading = false;
-      }
-    });
+    return this.http.get<MarvelApiResponse>(url);
   }
   
+  setComics(comics: Comic[]) {
+    this.comicsSubject.next(comics);
+  }
+
 }
