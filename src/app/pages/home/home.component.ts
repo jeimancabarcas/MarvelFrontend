@@ -67,7 +67,6 @@ export class HomeComponent {
   }
 
   openDetailModal(comic: Comic){
-
     this.openModal(comic);
   }
 
