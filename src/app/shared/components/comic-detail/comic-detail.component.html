@@ -1,0 +1,20 @@
+
+<div class="col-12">
+    <div class="card m-2 mw-100">
+        <div class="row g-0">
+            <div class="col-4 d-none d-md-block img-container">
+                <img [src]="comic.thumbnail.path +'.'+ comic.thumbnail.extension" class="img-fluid rounded-start img-square" />
+            </div>
+            <div class="col-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{comic.title}}</h5>
+                    <p class="card-text">
+                        {{comic.description}}
+                        <small class="text-muted">$ {{comic.prices[0].price}}</small>
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

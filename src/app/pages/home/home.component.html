@@ -1,2 +1,34 @@
 
-<app-comics-list [comics]="comics" [loading]="loading" [validateIsFavorite]="validateIsFavorite" (addToFavoriteEmitter)="onToggleFavorite($event)"></app-comics-list>
+<app-comics-list 
+[comics]="comics" 
+[loading]="loading" 
+[validateIsFavorite]="validateIsFavorite" 
+(addToFavoriteEmitter)="onToggleFavorite($event)"
+(openDetailEmitter)="openDetailModal($event)"></app-comics-list>
+<!-- modal.component.html -->
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            
+            @if (comicSelected) {
+
+                <h5 class="modal-title" id="exampleModalLabel">{{comicSelected.title}}</h5>
+            }
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            
+            @if (comicSelected) {
+                <app-comic-detail [comic]="comicSelected"></app-comic-detail>
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-info" (click)="onToggleFavorite(comicSelected)">{{ !validateIsFavorite(comicSelected) ? 'Agregar a Favoritos': 'Quitar de Favoritos'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>

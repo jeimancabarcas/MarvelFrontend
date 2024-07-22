@@ -9,8 +9,11 @@ import { map, Observable } from 'rxjs';
 })
 export class AuthService {
   private sessionKey = 'user';
+  currentUser: Observable<any>;
 
-  constructor(private router: Router, private afAuth: AngularFireAuth, private firestore: AngularFirestore) {}
+  constructor(private router: Router, private afAuth: AngularFireAuth, private firestore: AngularFirestore) {    
+    this.currentUser = this.afAuth.authState;
+  }
 
   login(email: string, password: string): Promise<void> {
     return this.afAuth.signInWithEmailAndPassword(email, password)

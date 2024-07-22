@@ -11,10 +11,16 @@ export class ComicsListComponent {
   @Input() comics: Comic[]= [];
   @Input() loading = true;
   @Input() validateIsFavorite = (comic: Comic) => false;
+  @Output() openDetailEmitter: EventEmitter<Comic> = new EventEmitter<Comic>();
   @Output() addToFavoriteEmitter: EventEmitter<Comic> = new EventEmitter<Comic>();
 
-  onToggleFavorite(comic: Comic) {
+  onToggleFavorite(comic: Comic, event: MouseEvent): void {
+    event.stopPropagation();
     this.addToFavoriteEmitter.emit(comic);
+  }
+
+  openDetail(comic: Comic) {
+    this.openDetailEmitter.emit(comic);
   }
 
 }
