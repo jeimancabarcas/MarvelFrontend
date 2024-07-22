@@ -49,7 +49,6 @@ export interface MarvelApiResponse {
   }
   
   export interface TextObject {
-    // Define según los datos que necesites, por ejemplo:
     type: string;
     language: string;
     text: string;
@@ -86,7 +85,6 @@ export interface MarvelApiResponse {
   }
   
   export interface Image {
-    // Asumiendo estructura similar a Thumbnail
     path: string;
     extension: string;
   }
