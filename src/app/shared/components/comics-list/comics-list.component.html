@@ -1,0 +1,33 @@
+<div class="overflow-auto">
+    <div class="container-fluid mt-2">
+        <h3>Listado de Comics</h3>
+        <div class="row">
+            @for (comic of comics; track comic.id) {
+                <div class="col-12 col-md-4">
+                    <div class="card m-2 mw-100">
+                        <div class="row g-0">
+                            <div class="col-12 d-none d-md-block img-container">
+                                <img [src]="comic.thumbnail.path +'.'+ comic.thumbnail.extension" class="img-fluid rounded-start img-square" />
+                            </div>
+                            <div class="col-12">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{comic.title}}</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">$ {{comic.prices[0].price}}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }@empty {
+                @if(loading) {
+                    <p>Cargando</p>
+                }@else {
+                    <p>No se han encontrado comics</p>
+                }
+
+            }
+        </div>
+    </div>
+</div>
