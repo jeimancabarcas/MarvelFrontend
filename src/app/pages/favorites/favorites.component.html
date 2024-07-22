@@ -1,1 +1,2 @@
-<p>favorites works!</p>
+
+<app-comics-list [comics]="favorites" [loading]="loading" [validateIsFavorite]="validateIsFavorite" (addToFavoriteEmitter)="onToggleFavorite($event)" listTitle="Mis Favoritos"></app-comics-list>

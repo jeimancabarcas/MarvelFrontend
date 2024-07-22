@@ -1,2 +1,2 @@
 
-<app-comics-list></app-comics-list>
+<app-comics-list [comics]="comics" [loading]="loading" [validateIsFavorite]="validateIsFavorite" (addToFavoriteEmitter)="onToggleFavorite($event)"></app-comics-list>

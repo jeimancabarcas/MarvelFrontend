@@ -1,6 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MarvelService } from '../../../services/marvel.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Comic } from '../../../models/marvelApi.model';
 
 @Component({
@@ -8,35 +6,15 @@ import { Comic } from '../../../models/marvelApi.model';
   templateUrl: './comics-list.component.html',
   styleUrls: ['./comics-list.component.scss']
 })
-export class ComicsListComponent implements OnInit, OnDestroy {
-  comics: Comic[] = [];
-  loading = true;
-  private subscriptions: Subscription = new Subscription();
+export class ComicsListComponent {
+  @Input() listTitle = 'Listado de Comics';
+  @Input() comics: Comic[]= [];
+  @Input() loading = true;
+  @Input() validateIsFavorite = (comic: Comic) => false;
+  @Output() addToFavoriteEmitter: EventEmitter<Comic> = new EventEmitter<Comic>();
 
-  constructor(private marvelService: MarvelService) {
-    this.subscriptions.add(
-      this.marvelService.comics$.subscribe((comics: Comic[]) => {
-        this.comics = comics;
-      })
-    );
+  onToggleFavorite(comic: Comic) {
+    this.addToFavoriteEmitter.emit(comic);
   }
 
-  ngOnInit(): void {
-    if (this.comics.length === 0) {
-      this.marvelService.getComics().subscribe({
-        next: (response) => { 
-          this.marvelService.setComics(response.data.results)
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Failed to load comics:', err);
-          this.loading = false;
-        }
-      });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
 }
