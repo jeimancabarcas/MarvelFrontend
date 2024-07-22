@@ -8,7 +8,6 @@ import { Comic } from '../../../models/marvelApi.model';
   selector: 'app-comics-list',
   templateUrl: './comics-list.component.html',
   styleUrl: './comics-list.component.scss',
-  standalone: true
 })
 export class ComicsListComponent {
   comics!: Comic[];
